@@ -194,7 +194,7 @@ class ServiceResource extends Resource
                     ]),
 
                 // Menampilkan daftar output klien menggunakan format list
-                Infolists\Components\Section::make('Deliverables Output Klien')
+                Infolists\Components\Section::make('Deliverables Output Client')
                     ->schema([
                         Infolists\Components\TextEntry::make('deliverables')
                             ->hiddenLabel()
