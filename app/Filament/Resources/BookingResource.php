@@ -40,6 +40,14 @@ class BookingResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
+
+                        Forms\Components\Select::make('crews')
+                            ->relationship('crews', 'name')
+                            ->label('Tugaskan Kru Lapangan')
+                            ->multiple() // Mengizinkan memilih banyak kru sekaligus
+                            ->preload()
+                            ->searchable()
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Detail Pelaksanaan')
@@ -164,6 +172,12 @@ class BookingResource extends Resource
                                     ->money('IDR', locale: 'id')
                                     ->badge()
                                     ->color('success'),
+
+                                Infolists\Components\TextEntry::make('crews.name')
+                                    ->label('Tim Kru Yang Bertugas')
+                                    ->badge()
+                                    ->color('gray')
+                                    ->columnSpanFull(),
                             ]),
                     ]),
 

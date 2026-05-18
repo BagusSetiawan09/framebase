@@ -31,4 +31,10 @@ class Booking extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    // Mengatur hubungan bahwa satu pemesanan bisa melibatkan banyak kru tim
+    public function crews(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Crew::class);
+    }
 }
