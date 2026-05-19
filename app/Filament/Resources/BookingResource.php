@@ -48,6 +48,15 @@ class BookingResource extends Resource
                             ->preload()
                             ->searchable()
                             ->columnSpanFull(),
+
+                        // Memilih inventaris alat yang akan digunakan ke lokasi
+                        Forms\Components\Select::make('equipment')
+                            ->relationship('equipment', 'name')
+                            ->label('Booking Inventaris Alat')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Detail Pelaksanaan')
@@ -177,6 +186,12 @@ class BookingResource extends Resource
                                     ->label('Tim Kru Yang Bertugas')
                                     ->badge()
                                     ->color('gray')
+                                    ->columnSpanFull(),
+
+                                Infolists\Components\TextEntry::make('equipment.name')
+                                    ->label('Peralatan Yang Dipinjam')
+                                    ->badge()
+                                    ->color('info')
                                     ->columnSpanFull(),
                             ]),
                     ]),

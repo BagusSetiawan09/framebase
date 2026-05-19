@@ -42,4 +42,10 @@ class Booking extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    // Mengatur hubungan bahwa satu pemesanan bisa meminjam banyak alat
+    public function equipment(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Equipment::class);
+    }
 }
