@@ -143,6 +143,49 @@ class BookingResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
+                    
+                    // Tombol Kustom Follow Up WhatsApp (Versi Enterprise & Detail)
+                    Tables\Actions\Action::make('whatsapp_followup')
+                        ->label('Follow Up WA')
+                        ->icon('heroicon-m-chat-bubble-left-ellipsis')
+                        ->color('success')
+                        ->url(function (Booking $record) {
+                            $phone = $record->client->phone ?? '';
+                            
+                            // Logika mengubah awalan 0 menjadi 62
+                            if (str_starts_with($phone, '0')) {
+                                $phone = '62' . substr($phone, 1);
+                            }
+                            
+                            $clientName = $record->client->name ?? 'Bapak/Ibu';
+                            $serviceName = $record->service->name ?? 'Layanan Visual';
+                            
+                            // Mengubah format tanggal menjadi rapi (Contoh: 15 Juni 2026)
+                            $bookingDate = \Carbon\Carbon::parse($record->booking_date)->translatedFormat('d F Y');
+                            
+                            // Menerjemahkan status sistem menjadi bahasa manusia yang sopan
+                            $statusMap = [
+                                'pending' => 'Menunggu Pembayaran (DP)',
+                                'confirmed' => 'Jadwal Terkonfirmasi',
+                                'ongoing' => 'Persiapan / Pelaksanaan Lapangan',
+                                'post_production' => 'Proses Editing (Post-Production)',
+                                'completed' => 'Selesai & Penyerahan File',
+                            ];
+                            $statusText = $statusMap[$record->status] ?? 'Sedang Diproses';
+                            
+                            // Meracik kalimat korporat yang detail dan elegan (Versi Teks Aman)
+                            $text = "Halo Bapak/Ibu {$clientName}, salam hangat dari FrameBase.\n\n"
+                                  . "Perkenalkan, kami dari Tim Operasional. Kami ingin mengonfirmasi bahwa pesanan Anda telah terdaftar di sistem kami dengan rincian sebagai berikut:\n\n"
+                                  . "- *Layanan*: {$serviceName}\n"
+                                  . "- *Tanggal Acara*: {$bookingDate}\n"
+                                  . "- *Status Saat Ini*: {$statusText}\n\n"
+                                  . "Untuk memastikan kelancaran jalannya proyek, apakah ada *brief* khusus, referensi visual, atau detail teknis lain yang ingin didiskusikan lebih lanjut bersama tim kami?\n\n"
+                                  . "Terima kasih atas kepercayaan Anda. Kami berkomitmen memberikan hasil visual yang maksimal.";
+                            
+                            return 'https://wa.me/' . $phone . '?text=' . urlencode($text);
+                        })
+                        ->openUrlInNewTab(),
+                        
                     Tables\Actions\DeleteAction::make(),
                 ])
                 ->label('Options')
