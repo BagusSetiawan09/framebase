@@ -3,8 +3,19 @@
         <a href="#" class="bg-[#333333] text-white px-8 py-2.5 rounded-full font-medium text-sm transition-all duration-300">
             Home
         </a>
-        <a href="#" class="text-gray-400 hover:text-white px-8 py-2.5 rounded-full font-medium text-sm transition-all duration-300">
+        
+        <a href="#order" class="text-gray-400 hover:text-white px-8 py-2.5 rounded-full font-medium text-sm transition-all duration-300">
             Order
         </a>
+
+        @auth
+            @if(!$sectionSetting)
+                <a href="{{ route('filament.admin.resources.section-settings.index') }}" 
+                   class="ml-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-full font-regular text-xs tracking-wider transition-all duration-300 animate-pulse flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                    Text Section Not Set
+                </a>
+            @endif
+        @endauth
     </div>
 </nav>
